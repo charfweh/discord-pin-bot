@@ -47,9 +47,6 @@ bot.on("message", async message=> {
                 message.author.send("Your suggestion has been sent, Thank you.");
                
             })
-                feedbackcollector.on('end',msg=>{
-                    message.author.send("Command timed out.");
-                })
 }
        
     switch(cmd)
