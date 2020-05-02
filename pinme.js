@@ -1,4 +1,3 @@
-
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const fs = require('fs')
