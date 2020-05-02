@@ -1,6 +1,5 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
-const fs = require('fs')
 const owner= process.env.owner
 const prefix = process.env.prefix
 bot.on("ready", async ()=> {
@@ -24,7 +23,7 @@ bot.on("message", async message=> {
         .addField("Server id",message.guild.id)
         .addField("Error",err)
         .setColor('RANDOM');
-        bot.users.get(process.env.owner).send(reportembed);
+        bot.users.get(owner).send(reportembed);
     }
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
