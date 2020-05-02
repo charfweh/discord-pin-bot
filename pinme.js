@@ -1,6 +1,7 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const fs = require('fs')
+const botconfig = require('botconfig.json')
 const prefix = botconfig.prefix;
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
