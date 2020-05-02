@@ -4,6 +4,7 @@ const owner= process.env.owner
 const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
+    bot.users.get(owner).send(`Im up${bot.uptime}`)
     bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
     bot.user.setStatus("online");
 });
@@ -31,6 +32,9 @@ bot.on("message", async message=> {
     if(message.channel.type == 'dm') return
     switch(cmd)
     {   
+        case "invite":
+            message.author.send('NTU4Mjg0NTMzMzI2NDEzODM2.Xq2FRw.hw8GakX2fWsMPfm2zfqg977VKpw');
+        break;
         case "set_bot":
             let iid;
             if(message.guild.channels.find(channel => channel.name === "pins")) return message.channel.send("Channel already exists.");
@@ -107,6 +111,7 @@ bot.on("message", async message=> {
             .addField("``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category")
             .addField("``suggestion``","Your lovely suggestion will be sent to Bot's owner")
             .addField("``ping``","Bot's latency")
+            .addField("``invite``","Bot's invite link")
             .setFooter("For more, do [prefix] [command_name].")
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
