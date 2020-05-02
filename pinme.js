@@ -107,11 +107,10 @@ bot.on("message", async message=> {
             .setThumbnail(message.author.avatarURL)
             .setTitle("Pin-me Help")
             .addField("**Available commands**",":warning: More commands will be added in the future")
-            .addField("``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions**\n It'll deny @everyone from sending messages")
-            .addField("``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category")
-            .addField("``suggestion``","Your lovely suggestion will be sent to Bot's owner")
-            .addField("``ping``","Bot's latency")
-            .addField("``invite``","Bot's invite link")
+            .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions**\n It'll deny @everyone from sending messages")
+            .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name")
+            .addField(":pushpin: ``suggestion``","Your lovely suggestion will be sent to Bot's owner")
+            .addField(":pushpin: ``ping``","Bot's latency")
             .setFooter("For more, do [prefix] [command_name].")
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
