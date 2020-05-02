@@ -29,8 +29,8 @@ bot.on("message", async message=> {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
     if(!message.content.startsWith(prefix) || message.author.bot) return;
-    if(message.channel.type == 'dm') return
-    if(message.channel.type == 'dm' && message.content.startsWith(prefix+"suggestion")){
+    if(message.channel.type == 'dm' && cmd !='suggestion') return
+    if(message.channel.type == 'dm' && cmd == 'suggestion'){
        
                 message.author.send("Please enter your suggestion, you've 1 minute");
                 const feedbackcollector = new discord.MessageCollector(message.channel, m=>m.author.id === message.author.id, {max:1,time:60000});
