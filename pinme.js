@@ -30,6 +30,28 @@ bot.on("message", async message=> {
     const cmd  = args.shift().toLowerCase();
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     if(message.channel.type == 'dm') return
+    if(message.channel.type == 'dm' && message.content.startsWith(prefix+"suggestion"){
+       
+                message.author.send("Please enter your suggestion, you've 1 minute");
+                const feedbackcollector = new discord.MessageCollector(message.channel, m=>m.author.id === message.author.id, {max:1,time:60000});
+                feedbackcollector.on('collect',feedcollect=>{
+                feedback = feedcollect.toString();
+                const feedembed = new discord.RichEmbed()
+                .setAuthor("Feedback from:")
+                .setColor("RANDOM")
+                .setThumbnail(message.author.avatarURL)
+                .addField(message.author.tag+"'s Feedback:",feedback)
+                .addField("Author's id:",message.author.id)
+                .setTimestamp()
+                bot.users.get('407170811787608064').send(feedembed);
+                message.author.send("Your suggestion has been sent, Thank you.");
+               
+            })
+                feedbackcollector.on('end',msg=>{
+                    message.author.send("Command timed out.");
+                })
+}
+       
     switch(cmd)
     {   
         case "invite":
@@ -116,32 +138,6 @@ bot.on("message", async message=> {
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
             }
-        break;
-        case "suggestion":
-        if(message.channel.type!='dm')
-        message.channel.send("Command works in dm-only");
-        if(message.channel.type=='dm')
-        {
-                message.author.send("Please enter your suggestion, you've 1 minute");
-                const feedbackcollector = new discord.MessageCollector(message.channel, m=>m.author.id === message.author.id, {max:1,time:60000});
-                feedbackcollector.on('collect',feedcollect=>{
-                feedback = feedcollect.toString();
-                const feedembed = new discord.RichEmbed()
-                .setAuthor("Feedback from:")
-                .setColor("RANDOM")
-                .setThumbnail(message.author.avatarURL)
-                .addField(message.author.tag+"'s Feedback:",feedback)
-                .addField("Author's id:",message.author.id)
-                .setTimestamp()
-                bot.users.get('407170811787608064').send(feedembed);
-                message.author.send("Your suggestion has been sent, Thank you.");
-               
-            })
-                feedbackcollector.on('end',msg=>{
-                    message.author.send("Command timed out.");
-                })
-        }
-       
         break;
         case "ping":
                 const m = await message.channel.send("Ping?");
