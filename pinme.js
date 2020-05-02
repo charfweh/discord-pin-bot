@@ -33,7 +33,7 @@ bot.on("message", async message=> {
     switch(cmd)
     {   
         case "invite":
-            message.author.send('NTU4Mjg0NTMzMzI2NDEzODM2.Xq2FRw.hw8GakX2fWsMPfm2zfqg977VKpw');
+            message.author.send('https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot');
         break;
         case "set_bot":
             let iid;
