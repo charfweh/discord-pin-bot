@@ -5,8 +5,8 @@ const owner= process.env.owner
 const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
-    bot.user.setActivity("Pop-ups", {type : "PLAYING"});
-    bot.user.setStatus("dnd");
+    bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
+    bot.user.setStatus("online");
 });
 /*
     TODOS
@@ -24,7 +24,7 @@ bot.on("message", async message=> {
         .addField("Server id",message.guild.id)
         .addField("Error",err)
         .setColor('RANDOM');
-        bot.users.get(owner).send(reportembed);
+        bot.users.get(process.env.owner).send(reportembed);
     }
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
