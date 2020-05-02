@@ -1,0 +1,23 @@
+{
+  "name": "pinbot",
+  "version": "1.0.0",
+  "description": "Discord pin bot",
+  "main": "pinme.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charfweh/discord-pin-bot.git"
+  },
+  "keywords": [
+    "discordjs",
+    "node"
+  ],
+  "author": "carefree#4601",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charfweh/discord-pin-bot/issues"
+  },
+  "homepage": "https://github.com/charfweh/discord-pin-bot#readme"
+}
