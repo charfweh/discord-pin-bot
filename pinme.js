@@ -1,5 +1,5 @@
-const botconfig = require("./config1.json" );
-const discord = require("../backup/node_modules/discord.js");
+
+const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const fs = require('fs')
 const prefix = botconfig.prefix;
