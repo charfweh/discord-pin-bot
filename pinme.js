@@ -29,25 +29,7 @@ bot.on("message", async message=> {
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
     if(!message.content.startsWith(prefix) || message.author.bot) return;
-    if(message.channel.type == 'dm' && cmd !='suggestion') return
-    if(message.channel.type == 'dm' && cmd == 'suggestion'){
-       
-                message.author.send("Please enter your suggestion, you've 1 minute");
-                const feedbackcollector = new discord.MessageCollector(message.channel, m=>m.author.id === message.author.id, {max:1,time:60000});
-                feedbackcollector.on('collect',feedcollect=>{
-                feedback = feedcollect.toString();
-                const feedembed = new discord.RichEmbed()
-                .setAuthor("Feedback from:")
-                .setColor("RANDOM")
-                .setThumbnail(message.author.avatarURL)
-                .addField(message.author.tag+"'s Feedback:",feedback)
-                .addField("Author's id:",message.author.id)
-                .setTimestamp()
-                bot.users.get('407170811787608064').send(feedembed);
-                message.author.send("Your suggestion has been sent, Thank you.");
-               
-            })
-}
+    if(message.channel.type == 'dm') return
        
     switch(cmd)
     {   
