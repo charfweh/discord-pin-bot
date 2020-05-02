@@ -1,8 +1,8 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const fs = require('fs')
-const owner= "407170811787608064"
-const prefix = "~";
+const owner= process.env.owner
+const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
     bot.user.setActivity("Pop-ups", {type : "PLAYING"});
