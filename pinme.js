@@ -1,8 +1,8 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const fs = require('fs')
-const botconfig = require('botconfig.json')
-const prefix = botconfig.prefix;
+const owner= "407170811787608064"
+const prefix = "~";
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
     bot.user.setActivity("Pop-ups", {type : "PLAYING"});
@@ -24,7 +24,7 @@ bot.on("message", async message=> {
         .addField("Server id",message.guild.id)
         .addField("Error",err)
         .setColor('RANDOM');
-        bot.users.get(botconfig.owner).send(reportembed);
+        bot.users.get(owner).send(reportembed);
     }
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
