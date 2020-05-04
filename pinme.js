@@ -122,6 +122,52 @@ bot.on("message", async message=> {
                 const m = await message.channel.send("Ping?");
                 m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
         break;
+        case "sendfile":
+            await message.channel.send("working on it..")
+            if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
+                else {
+                try{
+                    
+                    let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [];
+                    
+                    await message.channel.fetchPinnedMessages() 
+                    .then(async msg =>{
+                        if(msg.size == 0){
+                            message.channel.send("No pins in this channel, try pinning!")
+                            console.log(msg.size);
+                        }
+                        else{
+                            msg.forEach(function(value, key){
+                            //if(cont.length==0){ cont.push("null")}
+                            cont.push(value);
+                            authid.push(value.author.id);
+                            val.push(value.author.username);
+                            channelname.push(value.channel.name);
+                            avatar.push(value.author.avatarURL);
+                            value.attachments.forEach(function(attachment){
+                                    url.push(attachment.url);
+                                });
+                            let data = `Author:${val.pop()}\nContent:${cont.pop()}\nAuthor id:${authid.pop()}\nAttachment Url:${url.pop()}\n-----------\n`;
+                            fs.appendFile(`${message.channel.name}pins`,data,(err)=>{
+                                if(err) message.channel.send("Error encountered while loading messages");
+                            })
+                        });
+                        await message.channel.send("Pins saved")
+                        await message.channel.send({
+                        files:[{
+                            attachment:`./${message.channel.name}pins`,
+                            name:`${message.channel.name} pins.txt`
+                            }]
+                        });
+                    }
+                    
+                })  
+            }catch(err){
+                message.channel.send("I'm sorry, ran into an error, I'll let owner know :smile:");
+                reportdev(err,message)
+            }
+        }    
+        break;          
         
     }
 
