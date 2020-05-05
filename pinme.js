@@ -110,7 +110,7 @@ bot.on("message", async message=> {
             .addField("**Available commands**",":warning: More commands will be added in the future")
             .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions**\n It'll deny @everyone from sending messages")
             .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name")
-            //.addField(":pushpin: ``suggestion``","Your lovely suggestion will be sent to Bot's owner")
+            .addField(":pushpin: ``sendfile``","loads pinned messages of this channel and sends a text file")
             .addField(":pushpin: ``ping``","Bot's latency")
             .addField(":pushpin: ``invite``","Bot's invite link")
             .setFooter("For more, do [prefix] [command_name].")
