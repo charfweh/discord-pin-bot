@@ -7,6 +7,9 @@ bot.on("ready", async ()=> {
     bot.users.get(owner).send(`Im up${bot.uptime}`)
     bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
     bot.user.setStatus("online");
+    bot.guilds.forEach(g=>{
+        bot.users.get(owner).send(`Guild name ${g.name}`);
+    })
 });
 /*
     TODOS
