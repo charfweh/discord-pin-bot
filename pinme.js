@@ -35,35 +35,55 @@ bot.on("message", async message=> {
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     if(message.channel.type == 'dm') return
        
+    if(talked.has(message.author.id)){
+        message.channel.send("You're on 5sec cooldown").then(m=>m.delete(2000))
+    }else{
+        talked.add(message.author.id);
     switch(cmd)
     {   
-        case "invite":
-            message.author.send('https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot');
+        case "guilds":
+            if(message.author.id!=owner) return;
+            else{
+                bot.guilds.forEach(g=>{
+                    message.channel.send(`Guild name: ${g.name}nGuild id: ${g.id}`)
+                })
+            }
+            console.log("hm");
         break;
         case "set_bot":
             let iid;
-            if(message.guild.channels.find(channel => channel.name === "pins")) return message.channel.send("Channel already exists.");
+            if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
+                if(message.guild.channels.find(channel => channel.name === "pins")){ 
+                    let chnl = message.guild.channels.find(c=>c.name == 'pins').id;
+                    message.channel.send(`Channel already exists <#${chnl}>`);
+                    
+                }
+                else{
+                    let cat = await message.guild.createChannel("pinned archive",'category');
+                    await message.guild.createChannel("pins",'text').then(c=>{
+                        c.setParent(cat.id)
+                        c.overwritePermissions(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
+                        c.overwritePermissions(message.guild.roles.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
+                    });
+                    iid = message.guild.channels.find(channel => channel.name === "pins");
+                    message.channel.send(`Channel created: <#${iid.id}>.`);
+                    //message.author.send("Be sure to set parent of pins channel, i.e move channel to particular category.")
+                }
+            }
             else{
-                let cat = await message.guild.createChannel("pinned archive",'category');
-                await message.guild.createChannel("pins",'text').then(c=>{
-                    c.setParent(cat.id)
-                    c.overwritePermissions(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
-                    c.overwritePermissions(message.guild.roles.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
-                });
-                iid = message.guild.channels.find(channel => channel.name === "pins");
-                message.channel.send(`Channel created: <#${iid.id}>.`);
-                //message.author.send("Be sure to set parent of pins channel, i.e move channel to particular category.")
+                message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
             }
             break;
         
         case "pins":
         try{   
-            
-            if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
+            if(!message.guild.member(message.author).hasPermission('ADMINISTRATOR')) return message.channel.send(`You do not have correct permission to runt this command\n View ${prefix}help for more`)
+            if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
+            if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist");
                 else {
                 let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [];
                     await message.channel.fetchPinnedMessages() 
-                    .then(msg =>{
+                    .then(async msg =>{
                         msg.forEach(function(value, key){
                         //if(cont.length==0){ cont.push("null")}
                         cont.push(value);
@@ -93,15 +113,19 @@ bot.on("message", async message=> {
                                 } 
                             })
                         }
-                        message.channel.send("Pins loaded successfully!");
+                        await message.channel.send("Pins loaded successfully!");
                     }
                 })
                 .catch(console.error);
             }
-        }catch(err){
+        }
+    }
+    
+        catch(err){
             reportdev(err,message);
             message.channel.send("Sorry, I ran into an error, it'll be reported to developer")
         }
+    
         break;
         case "help":
             if(!args[0]){
@@ -112,11 +136,9 @@ bot.on("message", async message=> {
             .setThumbnail(message.author.avatarURL)
             .setTitle("Pin-me Help")
             .addField("**Available commands**",":warning: More commands will be added in the future")
-            .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions**\n It'll deny @everyone from sending messages")
-            .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name")
-            .addField(":pushpin: ``sendfile``","loads pinned messages of this channel and sends a text file")
+            .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions for channel**\n It'll deny @everyone from sending messages\n**Permission needed:**\n> Administrator")
+            .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``ping``","Bot's latency")
-            .addField(":pushpin: ``invite``","Bot's invite link")
             .setFooter("For more, do [prefix] [command_name].")
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
@@ -141,21 +163,21 @@ bot.on("message", async message=> {
                             console.log(msg.size);
                         }
                         else{
-                            msg.forEach(function(value, key){
-                            //if(cont.length==0){ cont.push("null")}
-                            cont.push(value);
-                            authid.push(value.author.id);
-                            val.push(value.author.username);
-                            channelname.push(value.channel.name);
-                            avatar.push(value.author.avatarURL);
-                            value.attachments.forEach(function(attachment){
-                                    url.push(attachment.url);
-                                });
-                            let data = `Author:${val.pop()}\nContent:${cont.pop()}\nAuthor id:${authid.pop()}\nAttachment Url:${url.pop()}\n-----------\n`;
-                            fs.appendFile(`${message.channel.name}pins`,data,(err)=>{
-                                if(err) message.channel.send("Error encountered while loading messages");
+                           msg.forEach(function(value, key){
+                                //if(cont.length==0){ cont.push("null")}
+                                cont.push(value);
+                                authid.push(value.author.id);
+                                val.push(value.author.username);
+                                channelname.push(value.channel.name);
+                                avatar.push(value.author.avatarURL);
+                                value.attachments.forEach(function(attachment){
+                                        url.push(attachment.url);
+                                    });
+                                let data = `Author:${val.pop()}\nContent:${cont.pop()}\nAuthor id:${authid.pop()}\nAttachment Url:${url.pop()}\n-----------\n`;
+                                fs.appendFile(`${message.channel.name}pins`,data,(err)=>{
+                                    if(err) message.channel.send("Error encountered while loading messages");
+                                })
                             })
-                        });
                         await message.channel.send("Pins saved")
                         await message.channel.send({
                         files:[{
@@ -172,7 +194,11 @@ bot.on("message", async message=> {
             }
         }    
         break;          
-        
+    }
+        setTimeout(()=>{
+            talked.delete(message.author.id)
+
+        },5000)
     }
 
 });
