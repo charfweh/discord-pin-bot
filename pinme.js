@@ -78,7 +78,6 @@ bot.on("message", async message=> {
         
         case "pins":
         try{   
-            if(!message.guild.member(message.author).hasPermission('ADMINISTRATOR')) return message.channel.send(`You do not have correct permission to runt this command\n View ${prefix}help for more`)
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist");
                 else {
@@ -119,6 +118,8 @@ bot.on("message", async message=> {
                 })
                 .catch(console.error);
             }
+        }else{
+            message.channel.send(`You do not have correct permission to run this command\nView \`\`${prefix}help\`\` for more`)
         }
     }
     
