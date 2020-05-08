@@ -142,7 +142,7 @@ bot.on("message", async message=> {
             .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``sendfile``","Loads pinned message of the channel and sends a txt file")
             .addField(":pushpin: ``ping``","Bot's latency")
-            .setFooter("For more, do [prefix] [command_name].")
+            .setFooter("Got any suggestion? I'll be happy to hear you out")
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
             }
