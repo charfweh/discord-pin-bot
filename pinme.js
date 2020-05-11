@@ -142,10 +142,14 @@ bot.on("message", async message=> {
             .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``sendfile``","Loads pinned message of the channel and sends a txt file")
             .addField(":pushpin: ``ping``","Bot's latency")
+            .addField(":pushpin: ``invite``","Invite link for the bot")
             .setFooter("Got any suggestion? I'll be happy to hear you out")
             .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
             message.channel.send(helpembed);
             }
+        break;
+        case "invite":
+            message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot")
         break;
         case "ping":
                 const m = await message.channel.send("Ping?");
