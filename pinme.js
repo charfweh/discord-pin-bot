@@ -13,13 +13,7 @@ bot.on("ready", async ()=> {
         bot.users.get(owner).send(`Guild name ${g.name}`);
     })
 });
-/*
-    TODOS
-    edit help command
-    make it more user friendly
-    add title
-    change desc
-*/
+
 bot.on("message", async message=> {
 
     function reportdev(err,message){
@@ -81,7 +75,7 @@ bot.on("message", async message=> {
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist");
                 else {
-                let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [];
+                let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],msgurl = [];
                     await message.channel.fetchPinnedMessages() 
                     .then(async msg =>{
                         msg.forEach(function(value, key){
@@ -89,6 +83,7 @@ bot.on("message", async message=> {
                         cont.push(value);
                         authid.push(value.author.id);
                         val.push(value.author.username);
+                        msgurl.push(value.url)
                         channelname.push(value.channel.name);
                         avatar.push(value.author.avatarURL);
                         value.attachments.forEach(function(attachment){
@@ -104,7 +99,8 @@ bot.on("message", async message=> {
                         .setColor("RANDOM")
                         .setThumbnail(avatar[i])
                         .addField("Author id: ", authid[i])
-                        .addField("Url: ", url[i])
+                        .addField("Attachment Url: ", url[i])
+                        .addField("Message Url: ",msgurl[i])
                         .addField("Channel name: ", channelname[i]);
                         message.guild.channels.find(channel=>{
                             if(channel.name === "pins"){
@@ -138,8 +134,8 @@ bot.on("message", async message=> {
             .setThumbnail(message.author.avatarURL)
             .setTitle("Pin-me Help")
             .addField("**Available commands**",":warning: More commands will be added in the future")
-            .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n**Permissions for channel**\n It'll deny @everyone from sending messages\n**Permission needed:**\n> Administrator")
-            .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\n**Permission needed:**\n> Administrator")
+            .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n\n**Permissions for channel**\n It'll deny @everyone from sending messages\n**Permission needed:**\n> Administrator")
+            .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\nMessage Url: Url to jump to pinned message\n\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``sendfile``","Loads pinned message of the channel and sends a txt file")
             .addField(":pushpin: ``ping``","Bot's latency")
             .addField(":pushpin: ``invite``","Invite link for the bot")
