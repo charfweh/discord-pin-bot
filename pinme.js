@@ -152,14 +152,14 @@ bot.on("message", async message=> {
                 m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
         break;
         case "sendfile":
-            await message.channel.send("working on it..")
             if(message.author.id!=owner){
-                message.channel.send("Cannot run this command, under development")
+                message.channel.send("Cannot run this command, this is command is under development")
                 return;
             }
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
                 else {
                 try{
+                    await message.channel.send("working on it..")
                     
                     let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [];
                     
