@@ -153,6 +153,10 @@ bot.on("message", async message=> {
         break;
         case "sendfile":
             await message.channel.send("working on it..")
+            if(message.author.id!=owner){
+                message.channel.send("Cannot run this command, under development")
+                return;
+            }
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
                 else {
                 try{
