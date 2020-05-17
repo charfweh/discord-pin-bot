@@ -147,6 +147,9 @@ bot.on("message", async message=> {
                 const m = await message.channel.send("Ping?");
                 m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
         break;
+        case "invite":
+            message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
+        break;
         case "sendfile":
             await message.channel.send("working on it..")
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
