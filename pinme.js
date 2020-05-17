@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
 const owner= process.env.owner
-const cmdfile = require('botconfig.json')
+const cmdfile = require('./botconfig.json')
 const fs = require('fs')
 const talked = new Set();
 const prefix = process.env.prefix
