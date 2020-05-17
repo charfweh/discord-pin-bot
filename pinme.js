@@ -7,7 +7,7 @@ const talked = new Set();
 const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
-    bot.users.get(owner).send(`Im up${bot.uptime}`)
+    bot.users.get(owner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
     bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
     bot.user.setStatus("online");
     bot.guilds.forEach(g=>{
