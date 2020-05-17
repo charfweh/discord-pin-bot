@@ -148,7 +148,8 @@ bot.on("message", async message=> {
                 m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
         break;
         case "invite":
-            message.author.send("https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
+            message.channel.send("You've got a dm!")
+            await message.author.send("Invite me~\nhttps://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
         break;
         case "sendfile":
             await message.channel.send("working on it..")
