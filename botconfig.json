@@ -1,4 +1,5 @@
     {
         "prefix" :  "~",
-        "owner":"407170811787608064"
+        "owner":"407170811787608064",
+        "cmdname":["ping","help","pins","guilds","set_bot","sendfile"]
      }
