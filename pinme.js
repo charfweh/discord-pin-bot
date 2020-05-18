@@ -152,6 +152,10 @@ bot.on("message", async message=> {
             await message.author.send("Invite me~\nhttps://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
         break;
         case "sendfile":
+            if(message.author.id!=owner){
+                message.channel.send("Command under development! Check back later")
+                return;
+            }
             await message.channel.send("working on it..")
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
                 else {
