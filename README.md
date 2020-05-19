@@ -6,7 +6,6 @@ can you?<br>
 #### Permissions Overwrites
 @everyone : deny send message
 You can edit channel's permission as you like but dont remove whats already been set, or open your arms for warm errors that befall
-Looking for bot suggestion yea send me @Carefree#4601
 #### Commands available
 
 - ``pins``: Loads this channel's pinned message into a channel called pins under category Pinned archive
@@ -16,5 +15,6 @@ Looking for bot suggestion yea send me @Carefree#4601
 - ``invite``:Invite link for the bot
 
 #### Invite link
-[Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=470150257&scope=bot)<br>
-Enjoy~
+Invite me, I'd love assist you[Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=470150257&scope=bot)<br>
+
+Got a bot suggestion? yea send me Discord @Carefree#4601
