@@ -1,5 +1,5 @@
 <h3>Discord.js Pin-bot</h3>
-This Project was made possible by [Discord.js](https://discord.js.org/#/)
+This Project was made possible by [discord.js](https://discord.js.org/#/)
 <br>Reached pinned message cap? you cant pin more or<br>
 <h5>can you?</h5><br>
 Introducing <b><i>pin-bot</i></b>, a discord bot which helps load your pinned messages into a separate channel keeping it safe and sound
