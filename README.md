@@ -16,5 +16,5 @@ Looking for bot suggestion yea send me @Carefree#4601
 - ``invite``:Invite link for the bot
 
 #### Invite link
-<p>[Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=470150257&scope=bot)<p>
+[Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=470150257&scope=bot)<br>
 Enjoy~
