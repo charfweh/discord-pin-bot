@@ -38,7 +38,7 @@ bot.on("message", async message=> {
     switch(cmd)
     {   
         case "guilds":
-            if(message.author.id!=botconfig.owner) return;
+            if(message.author.id!=owner) return;
             else{
                 bot.guilds.forEach(g=>{
                     message.channel.send(`Guild name: ${g.name}nGuild id: ${g.id}`)
