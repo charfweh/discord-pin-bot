@@ -158,7 +158,7 @@ bot.on("message", async message=> {
         case "sendfile":
          await message.channel.send("Working on it...")
             try {
-              await fs.access(`./${message.channel.name}`,(err)=>{
+              await fs.access(`./${message.channel.name}`,async (err)=>{
                   if(err){
                       //if the file doesnt exist make a new one and add pins to it
                       console.log("FIle doesnt exist")
