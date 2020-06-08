@@ -189,7 +189,9 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      }).catch(console.error();)
+                      }).catch(err){
+                        console.error();
+                      }
                       return;
                   }
                   try{
