@@ -158,11 +158,11 @@ bot.on("message", async message=> {
         case "sendfile":
          await message.channel.send("Working on it...")
             try {
-              fs.access(`./${message.channel.name}`,(err)=>{
+              await fs.access(`./${message.channel.name}`,(err)=>{
                   if(err){
                       //if the file doesnt exist make a new one and add pins to it
                       console.log("FIle doesnt exist")
-                      message.channel.fetchPinnedMessages()
+                      await message.channel.fetchPinnedMessages()
                       .then(async msg=>{
                           if(msg.size == 0){
                               message.channel.send("no pins, try pinning")
@@ -193,14 +193,14 @@ bot.on("message", async message=> {
                       return;
                   }
                       // if the file does exists, delete the file and make a new one and then add data to it
-                      fs.unlink(`./${message.channel.name}`,(err)=>{
+                      await fs.unlink(`./${message.channel.name}`,(err)=>{
                           if(err){
                               message.channel.send("We ran into an error, I'll let developer know~")
                               reportdev(err,msg)
                           }
                           console.log("Deleted")
                       })
-                      message.channel.fetchPinnedMessages()
+                      await message.channel.fetchPinnedMessages()
                       .then(async msg=>{
                           if(msg.size == 0){
                               message.channel.send("no pins, try pinning")
