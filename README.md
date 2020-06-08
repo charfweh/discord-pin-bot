@@ -1,4 +1,5 @@
 # Pin-bot
+![Pinme](https://media.discordapp.net/attachments/716902525374038027/719413952366247966/Pin-me-removebg-preview.png)
 This Project was made possible by [discord.js](https://discord.js.org/#/)<br>
 Reached pinned message cap? you cant pin more or<br>
 can you?<br>
@@ -11,9 +12,9 @@ can you?<br>
 
 - pins: Limited to members with Administrator Permission<br>
 
-You can edit channel's permission as you like but dont remove whats already been set, or open your 
+You can edit channel's permission as you like but dont remove whats already been set, or open your
 arms for warm errors that befall<br>
-To not let guild members misuse pin log channel, we apply permissions which define who’ll get access to this channel. 
+To not let guild members misuse pin log channel, we apply permissions which define who’ll get access to this channel.
 
 #### Commands available
 
