@@ -182,6 +182,13 @@ bot.on("message", async message=> {
                               })
                           })
                           await message.channel.send("Yea im done")
+                          await message.channel.send("Pins saved")
+                          await message.channel.send({
+                          files:[{
+                              attachment:`./${message.channel.name}pins`,
+                              name:`${message.guild.name}_${message.channel.name} pins.txt`
+                              }]
+                          });
                       })
                       return;
                   }
@@ -213,6 +220,13 @@ bot.on("message", async message=> {
                                   }
                               })
                           })
+                          await message.channel.send("Pins saved")
+                          await message.channel.send({
+                          files:[{
+                              attachment:`./${message.channel.name}pins`,
+                              name:`${message.guild.name}_${message.channel.name} pins.txt`
+                              }]
+                          });
                       })
                   }catch(err){
                       console.log(err)
