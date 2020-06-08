@@ -15,7 +15,7 @@ bot.on("ready", async ()=> {
     })
 });
 bot.on('guildCreate', async(guild)=>{
-  guild.channels.get('719408160380813343').send("Joined a guild "+guild.name)
+  bot.channels.get('719408160380813343').send(`Joined a guild ${guild.name}`)
 })
 
 bot.on("message", async message=> {
