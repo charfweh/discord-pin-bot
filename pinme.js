@@ -189,9 +189,7 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      }).catch(err){
-                        console.error();
-                      }
+                      }).catch(err)
                       return;
                   }
                   try{
@@ -232,9 +230,7 @@ bot.on("message", async message=> {
                       }).catch(err){
                         console.error();
                       }
-                  }catch(err){
-                      console.log(err)
-                  }
+                  }catch(err)
               })
             } catch (e) {
               message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
