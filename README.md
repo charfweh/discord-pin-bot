@@ -1,6 +1,6 @@
 # Pin-bot
 ![Pinme](https://media.discordapp.net/attachments/716902525374038027/719413952366247966/Pin-me-removebg-preview.png?)
-This Project was made possible by [discord.js](https://discord.js.org/#/)<br>
+<br>This Project was made possible by [discord.js](https://discord.js.org/#/)<br>
 Reached pinned message cap? you cant pin more or<br>
 can you?<br>
 ###### Introducing pin bot, a discord bot which helps load your pinned messages into a separate channel keeping it safe and sound
