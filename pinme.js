@@ -152,67 +152,76 @@ bot.on("message", async message=> {
                 m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(bot.ping)}ms`);
         break;
         case "invite":
-            message.channel.send("You've got a dm!")
+            await message.channel.send("You've got a dm!")
             await message.author.send("Invite me~\nhttps://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
         break;
         case "sendfile":
-            if(message.author.id!=owner){
-                message.channel.send("Command under development! Check back later")
-                return;
+         await message.channel.send("Working on it...")
+            try {
+              fs.access(`./${message.channel.name}`,(err)=>{
+                  if(err){
+                      //if the file doesnt exist make a new one and add pins to it
+                      console.log("FIle doesnt exist")
+                      message.channel.fetchPinnedMessages()
+                      .then(async msg=>{
+                          if(msg.size == 0){
+                              message.channel.send("no pins, try pinning")
+                              return;
+                          }
+                          let authid = [], authname = [], cont = []
+                          msg.forEach((v,k)=>{
+                              authid.push(v.author.id)
+                              authname.push(v.author.name)
+                              cont.push(v)
+                              let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
+                              fs.appendFile(`./${message.channel.name}`,data,(err)=>{
+                                  if(err){
+                                      message.channel.send("NOpe")
+                                      console.log(err)
+                                  }
+                              })
+                          })
+                          await message.channel.send("Yea im done")
+                      })
+                      return;
+                  }
+                  try{
+                      // if the file does exists, delete the file and make a new one and then add data to it
+                      fs.unlink(`./${message.channel.name}`,(err)=>{
+                          if(err){
+                              message.channel.send("We ran into an error, I'll let developer know~")
+                              reportdev(err,msg)
+                          }
+                          console.log("Deleted")
+                      })
+                      message.channel.fetchPinnedMessages()
+                      .then(async msg=>{
+                          if(msg.size == 0){
+                              message.channel.send("no pins, try pinning")
+                          }
+                          let authid = [], authname = [], cont = []
+                          msg.forEach((v,k)=>{
+                              authid.push(v.author.id)
+                              authname.push(v.author.name)
+                              cont.push(v)
+                              let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
+                              fs.appendFile(`./${message.channel.name}`,data,(err)=>{
+                                  if(err){
+                                      message.channel.send("NOpe")
+                                      console.log(err)
+                                      reportdev(err,msg)
+                                  }
+                              })
+                          })
+                      })
+                  }catch(err){
+                      console.log(err)
+                  }
+              })
+            } catch (e) {
+              message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
+              reportdev(e,message)
             }
-            await message.channel.send("working on it..")
-            if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
-                else {
-                try{
-
-                    let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],gname = [];
-
-                    await message.channel.fetchPinnedMessages()
-                    .then(async msg =>{
-                        if(msg.size == 0){
-                            message.channel.send("No pins in this channel, try pinning!")
-                            console.log(msg.size);
-                        }
-                        else{
-                            fs.access(`/${message.channel.name}pins`,(err)=>{
-                                if(!err){
-                                    message.channel.send("Here")
-                                }
-                                else{
-                                    message.channel.send("Not here")
-                                }
-                            })
-                           msg.forEach(function(value, key){
-                                cont.push(value);
-                                authid.push(value.author.id);
-                                gname.push(value.guild.name);
-                                val.push(value.author.username);
-                                channelname.push(value.channel.name);
-                                avatar.push(value.author.avatarURL);
-                                value.attachments.forEach(function(attachment){
-                                        url.push(attachment.url);
-                                    });
-                                let data = `Sever name:${gname.pop()}\nAuthor:${val.pop()}\nContent:${cont.pop()}\nAuthor id:${authid.pop()}\nAttachment Url:${url.pop()}\n-----------\n`;
-                                fs.appendFile(`${message.channel.name}pins`,data,(err)=>{
-                                    if(err) message.channel.send("Error encountered while loading messages");
-                                })
-                                console.log(data)
-                            })
-                        await message.channel.send("Pins saved")
-                        await message.channel.send({
-                        files:[{
-                            attachment:`./${message.channel.name}pins`,
-                            name:`${message.guild.name}_${message.channel.name} pins.txt`
-                            }]
-                        });
-                    }
-
-                })
-            }catch(err){
-                message.channel.send("I'm sorry, ran into an error, I'll let owner know :smile:");
-                reportdev(err,message)
-            }
-        }
         break;
         default:
             return;
