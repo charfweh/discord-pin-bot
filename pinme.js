@@ -189,10 +189,9 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      }).catch(err)
+                      }).catch(err=>console.log(err))
                       return;
                   }
-                  try{
                       // if the file does exists, delete the file and make a new one and then add data to it
                       fs.unlink(`./${message.channel.name}`,(err)=>{
                           if(err){
@@ -227,10 +226,7 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      }).catch(err){
-                        console.error();
-                      }
-                  }catch(err)
+                      }).catch(err=>console.log(err))
               })
             } catch (e) {
               message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
