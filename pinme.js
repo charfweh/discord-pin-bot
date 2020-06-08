@@ -14,6 +14,9 @@ bot.on("ready", async ()=> {
         bot.users.get(owner).send(`Guild name ${g.name}`);
     })
 });
+bot.on('guildCreate', async(guild)=>{
+  guild.channels.get('719408160380813343').send("Joined a guild "+guild.name)
+})
 
 bot.on("message", async message=> {
 
@@ -36,7 +39,7 @@ bot.on("message", async message=> {
     }else{
         talked.add(message.author.id);
     switch(cmd)
-    {   
+    {
         case "guilds":
             if(message.author.id!=owner) return;
             else{
@@ -49,10 +52,10 @@ bot.on("message", async message=> {
         case "set_bot":
             let iid;
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
-                if(message.guild.channels.find(channel => channel.name === "pins")){ 
+                if(message.guild.channels.find(channel => channel.name === "pins")){
                     let chnl = message.guild.channels.find(c=>c.name == 'pins').id;
                     message.channel.send(`Channel already exists <#${chnl}>`);
-                    
+
                 }
                 else{
                     let cat = await message.guild.createChannel("pinned archive",'category');
@@ -70,14 +73,14 @@ bot.on("message", async message=> {
                 message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
             }
             break;
-        
+
         case "pins":
-        try{   
+        try{
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist");
                 else {
                 let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],msgurl = [];
-                    await message.channel.fetchPinnedMessages() 
+                    await message.channel.fetchPinnedMessages()
                     .then(async msg =>{
                         msg.forEach(function(value, key){
                         //if(cont.length==0){ cont.push("null")}
@@ -107,7 +110,7 @@ bot.on("message", async message=> {
                             if(channel.name === "pins"){
                                 let iiid = channel.id;
                                 bot.channels.get(iiid).send(embed);
-                                } 
+                                }
                             })
                         }
                         await message.channel.send("Pins loaded successfully!");
@@ -119,12 +122,12 @@ bot.on("message", async message=> {
             message.channel.send(`You do not have correct permission to run this command\nView \`\`${prefix}help\`\` for more`)
         }
     }
-    
+
         catch(err){
             reportdev(err,message);
             message.channel.send("Sorry, I ran into an error, it'll be reported to developer")
         }
-    
+
         break;
         case "help":
             if(!args[0]){
@@ -161,10 +164,10 @@ bot.on("message", async message=> {
             if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist.");
                 else {
                 try{
-                    
+
                     let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],gname = [];
-                    
-                    await message.channel.fetchPinnedMessages() 
+
+                    await message.channel.fetchPinnedMessages()
                     .then(async msg =>{
                         if(msg.size == 0){
                             message.channel.send("No pins in this channel, try pinning!")
@@ -203,16 +206,16 @@ bot.on("message", async message=> {
                             }]
                         });
                     }
-                    
-                })  
+
+                })
             }catch(err){
                 message.channel.send("I'm sorry, ran into an error, I'll let owner know :smile:");
                 reportdev(err,message)
             }
-        }    
-        break; 
+        }
+        break;
         default:
-            return;         
+            return;
         }
             setTimeout(()=>{
                 talked.delete(message.author.id)
@@ -224,4 +227,3 @@ bot.on("message", async message=> {
 });
 
 bot.login(process.env.bot_token);
-
