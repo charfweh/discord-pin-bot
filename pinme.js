@@ -125,7 +125,7 @@ bot.on("message", async message=> {
 
         catch(err){
             reportdev(err,message);
-            message.channel.send("Sorry, I ran into an error, it'll be reported to developer")
+            message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
         }
 
         break;
