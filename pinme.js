@@ -155,84 +155,7 @@ bot.on("message", async message=> {
             await message.channel.send("You've got a dm!")
             await message.author.send("Invite me~\nhttps://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
         break;
-        case "sendfile":
-         await message.channel.send("Working on it...")
-            try {
-              await fs.access(`./${message.channel.name}`,async (err)=>{
-                  if(err){
-                      //if the file doesnt exist make a new one and add pins to it
-                      console.log("FIle doesnt exist")
-                      await message.channel.fetchPinnedMessages()
-                      .then(async msg=>{
-                          if(msg.size == 0){
-                              message.channel.send("no pins, try pinning")
-                              return;
-                          }
-                          let authid = [], authname = [], cont = []
-                          msg.forEach((v,k)=>{
-                              authid.push(v.author.id)
-                              authname.push(v.author.name)
-                              cont.push(v)
-                              let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
-                              fs.appendFile(`./${message.channel.name}`,data,(err)=>{
-                                  if(err){
-                                      message.channel.send("NOpe")
-                                      console.log(err)
-                                  }
-                              })
-                          })
-                          await message.channel.send("Yea im done")
-                          await message.channel.send("Pins saved")
-                          await message.channel.send({
-                          files:[{
-                              attachment:`./${message.channel.name}pins`,
-                              name:`${message.guild.name}_${message.channel.name} pins.txt`
-                              }]
-                          });
-                      }).catch(err=>console.log(err))
-                      return;
-                  }
-                      // if the file does exists, delete the file and make a new one and then add data to it
-                      await fs.unlink(`./${message.channel.name}`,(err)=>{
-                          if(err){
-                              message.channel.send("We ran into an error, I'll let developer know~")
-                              reportdev(err,msg)
-                          }
-                          console.log("Deleted")
-                      })
-                      await message.channel.fetchPinnedMessages()
-                      .then(async msg=>{
-                          if(msg.size == 0){
-                              message.channel.send("no pins, try pinning")
-                          }
-                          let authid = [], authname = [], cont = []
-                          msg.forEach((v,k)=>{
-                              authid.push(v.author.id)
-                              authname.push(v.author.name)
-                              cont.push(v)
-                              let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
-                              fs.appendFile(`./${message.channel.name}`,data,(err)=>{
-                                  if(err){
-                                      message.channel.send("NOpe")
-                                      console.log(err)
-                                      reportdev(err,msg)
-                                  }
-                              })
-                          })
-                          await message.channel.send("Pins saved")
-                          await message.channel.send({
-                          files:[{
-                              attachment:`./${message.channel.name}pins`,
-                              name:`${message.guild.name}_${message.channel.name} pins.txt`
-                              }]
-                          });
-                      }).catch(err=>console.log(err))
-              })
-            } catch (e) {
-              message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
-              reportdev(e,message)
-            }
-        break;
+
         default:
             return;
         }
@@ -246,3 +169,85 @@ bot.on("message", async message=> {
 });
 
 bot.login(process.env.bot_token);
+
+
+//something to ignore
+// case "sendfile":
+//
+//  await message.channel.send("Working on it...")
+//     try {
+//       await fs.access(`./${message.channel.name}`,async (err)=>{
+//           if(err){
+//               //if the file doesnt exist make a new one and add pins to it
+//               console.log("FIle doesnt exist")
+//               await message.channel.fetchPinnedMessages()
+//               .then(async msg=>{
+//                   if(msg.size == 0){
+//                       message.channel.send("no pins, try pinning")
+//                       return;
+//                   }
+//                   let authid = [], authname = [], cont = []
+//                   msg.forEach((v,k)=>{
+//                       authid.push(v.author.id)
+//                       authname.push(v.author.name)
+//                       cont.push(v)
+//                       let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
+//                       fs.appendFile(`./${message.channel.name}`,data,(err)=>{
+//                           if(err){
+//                               message.channel.send("NOpe")
+//                               console.log(err)
+//                           }
+//                       })
+//                   })
+//                   await message.channel.send("Yea im done")
+//                   await message.channel.send("Pins saved")
+//                   await message.channel.send({
+//                   files:[{
+//                       attachment:`./${message.channel.name}pins`,
+//                       name:`${message.guild.name}_${message.channel.name} pins.txt`
+//                       }]
+//                   });
+//               }).catch(err=>console.log(err))
+//               return;
+//           }
+//               // if the file does exists, delete the file and make a new one and then add data to it
+//               await fs.unlink(`./${message.channel.name}`,(err)=>{
+//                   if(err){
+//                       message.channel.send("We ran into an error, I'll let developer know~")
+//                       reportdev(err,msg)
+//                   }
+//                   console.log("Deleted")
+//               })
+//               await message.channel.fetchPinnedMessages()
+//               .then(async msg=>{
+//                   if(msg.size == 0){
+//                       message.channel.send("no pins, try pinning")
+//                   }
+//                   let authid = [], authname = [], cont = []
+//                   msg.forEach((v,k)=>{
+//                       authid.push(v.author.id)
+//                       authname.push(v.author.name)
+//                       cont.push(v)
+//                       let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
+//                       fs.appendFile(`./${message.channel.name}`,data,(err)=>{
+//                           if(err){
+//                               message.channel.send("NOpe")
+//                               console.log(err)
+//                               reportdev(err,msg)
+//                           }
+//                       })
+//                   })
+//                   await message.channel.send("Pins saved")
+//                   await message.channel.send({
+//                   files:[{
+//                       attachment:`./${message.channel.name}pins`,
+//                       name:`${message.guild.name}_${message.channel.name} pins.txt`
+//                       }]
+//                   });
+//               }).catch(err=>console.log(err))
+//       })
+//     } catch (e) {
+//       message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
+//       reportdev(e,message)
+//     }
+// break;
