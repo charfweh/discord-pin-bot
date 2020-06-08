@@ -189,7 +189,7 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      })
+                      }).catch(console.error();)
                       return;
                   }
                   try{
@@ -227,7 +227,9 @@ bot.on("message", async message=> {
                               name:`${message.guild.name}_${message.channel.name} pins.txt`
                               }]
                           });
-                      })
+                      }).catch(err){
+                        console.error();
+                      }
                   }catch(err){
                       console.log(err)
                   }
