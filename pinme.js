@@ -13,18 +13,18 @@ const env = require('dotenv').config()
 // const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('I am ready to pin');
-    // bot.users.get(stubowner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
-    // bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
-    // bot.user.setStatus("online");
-    // bot.guilds.forEach(g=>{
-    //     bot.users.get(owner).send(`Guild name ${g.name}`);
-    // })
+    bot.users.cache.get(stubowner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
+    bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
+    bot.user.setStatus("online");
+    bot.guilds.cache.forEach(g=>{
+        bot.users.cache.get(stubowner).send(`Guild name ${g.name}`);
+    })
 });
 bot.on('guildCreate', async(guild)=>{
   bot.channels.cache.get(cmdfile.guildchannel).send(`Joined a guild ${guild.name}`)
 })
 bot.on('guildDelete',async(g)=>{
-  bot.channels.cache.get(cmdfile.guildchannel).send(`Left guild ${g.name}`)
+  bot.channels.cache.get(cmdfile.guildchannel).send(`Left a guild ${g.name}`)
 })
 
 bot.on("message", async message=> {
@@ -61,17 +61,14 @@ bot.on("message", async message=> {
             let iid;
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
                 if(message.guild.channels.cache.find(channel => channel.name === "pins")){
-                    message.channel.send(`Channel already exists <#${message.guild.channels.cache.find(c=>c.name == 'pins').id}>`);
+                    message.channel.send(`Channel already exists ${message.guild.channels.cache.find(c=>c.name == 'pins') }`);
                 }
                 else{
-                    let cat = await message.guild.channels.create("pinned archive",{type:'category'});
                     await message.guild.channels.create("pins",{type:'text'}).then(c=>{
-                      c.setParent(cat.id)
                         c.createOverwrite(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
                         c.createOverwrite(message.guild.roles.cache.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
                     });
-                    iid = message.guild.channels.cache.find(channel => channel.name === "pins");
-                    message.channel.send(`Channel created: <#${iid.id}>.`);
+                    message.channel.send(`Channel created: ${message.guild.channels.cache.find(channel => channel.name === "pins")}`);
                 }
             }
             else return message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
@@ -110,8 +107,7 @@ bot.on("message", async message=> {
                         .addField("Channel name: ", channelname[i]);
                         message.guild.channels.cache.find(channel=>{
                             if(channel.name === "pins"){
-                                let iiid = channel.id;
-                                bot.channels.cache.get(iiid).send(embed);
+                                bot.channels.cache.get(channel.id).send(embed);
                                 }
                             })
                         }
