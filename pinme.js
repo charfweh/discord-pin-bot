@@ -1,18 +1,20 @@
 const discord = require("discord.js");
 const bot = new discord.Client({disableEveryone : true});
-const owner= process.env.owner
+// const owner= process.env.owner
 const cmdfile = require('./botconfig.json')
+const stubowner = cmdfile.owner
+const prefix = cmdfile.prefix
 const fs = require('fs')
 const talked = new Set();
-const prefix = process.env.prefix
+// const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
-    bot.users.get(owner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
-    bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
-    bot.user.setStatus("online");
-    bot.guilds.forEach(g=>{
-        bot.users.get(owner).send(`Guild name ${g.name}`);
-    })
+    // bot.users.get(stubowner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
+    // bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
+    // bot.user.setStatus("online");
+    // bot.guilds.forEach(g=>{
+    //     bot.users.get(owner).send(`Guild name ${g.name}`);
+    // })
 });
 bot.on('guildCreate', async(guild)=>{
   bot.channels.get('719408160380813343').send(`Joined a guild ${guild.name}`)
@@ -21,7 +23,7 @@ bot.on('guildCreate', async(guild)=>{
 bot.on("message", async message=> {
 
     function reportdev(err,message){
-        const reportembed = new discord.RichEmbed()
+        const reportembed = new discord.MessageEmbed()
         .setTitle("Error encountered")
         .addField("Server name",message.guild.name)
         .addField("Server id",message.guild.id)
@@ -34,14 +36,19 @@ bot.on("message", async message=> {
     if(!message.content.startsWith(prefix) || message.author.bot) return;
     if(message.channel.type == 'dm') return
     if(message.content.startsWith(prefix) && cmdfile.cmdname.includes(cmd)){
-    if(talked.has(message.author.id)){
-        message.channel.send("You're on 5sec cooldown").then(m=>m.delete(2000))
-    }else{
-        talked.add(message.author.id);
+      if(talked.has(message.author.id)){
+            message.channel.send("You're on 5sec cooldown");
+        }else{
+            talked.add(message.author.id);
     switch(cmd)
     {
+        case "test":
+          bot.users.cache.get(stubowner).send("ok")
+          message.channel.send("Im up");
+
+        break;
         case "guilds":
-            if(message.author.id!=owner) return;
+            if(message.author.id!=stubowner) return;
             else{
                 bot.guilds.forEach(g=>{
                     message.channel.send(`Guild name: ${g.name}nGuild id: ${g.id}`)
@@ -97,7 +104,7 @@ bot.on("message", async message=> {
                 if(val.length == 0) message.channel.send("No pins in this channel. Try pinning!");
                 else{
                     for(i = 0 ; i < val.length; i++){
-                        const embed = new discord.RichEmbed()
+                        const embed = new discord.MessageEmbed()
                         .setTitle("Pinned message")
                         .addField("Author : "+val[i],"Content: "+cont[i])
                         .setColor("RANDOM")
@@ -131,7 +138,7 @@ bot.on("message", async message=> {
         break;
         case "help":
             if(!args[0]){
-            const helpembed = new discord.RichEmbed()
+            const helpembed = new discord.MessageEmbed()
             .setAuthor(message.guild.me.user.username,message.guild.me.user.avatarURL)
             .setTimestamp()
             .setColor("RANDOM")
@@ -159,95 +166,14 @@ bot.on("message", async message=> {
         default:
             return;
         }
-            setTimeout(()=>{
-                talked.delete(message.author.id)
-
-            },5000)
+        setTimeout(()=>{
+            console.log("author deleting",message.author.id)
+            talked.delete(message.author.id)
+        },5000)
         }
     }
 
 });
 
-bot.login(process.env.bot_token);
-
-
-//something to ignore
-// case "sendfile":
-//
-//  await message.channel.send("Working on it...")
-//     try {
-//       await fs.access(`./${message.channel.name}`,async (err)=>{
-//           if(err){
-//               //if the file doesnt exist make a new one and add pins to it
-//               console.log("FIle doesnt exist")
-//               await message.channel.fetchPinnedMessages()
-//               .then(async msg=>{
-//                   if(msg.size == 0){
-//                       message.channel.send("no pins, try pinning")
-//                       return;
-//                   }
-//                   let authid = [], authname = [], cont = []
-//                   msg.forEach((v,k)=>{
-//                       authid.push(v.author.id)
-//                       authname.push(v.author.name)
-//                       cont.push(v)
-//                       let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
-//                       fs.appendFile(`./${message.channel.name}`,data,(err)=>{
-//                           if(err){
-//                               message.channel.send("NOpe")
-//                               console.log(err)
-//                           }
-//                       })
-//                   })
-//                   await message.channel.send("Yea im done")
-//                   await message.channel.send("Pins saved")
-//                   await message.channel.send({
-//                   files:[{
-//                       attachment:`./${message.channel.name}pins`,
-//                       name:`${message.guild.name}_${message.channel.name} pins.txt`
-//                       }]
-//                   });
-//               }).catch(err=>console.log(err))
-//               return;
-//           }
-//               // if the file does exists, delete the file and make a new one and then add data to it
-//               await fs.unlink(`./${message.channel.name}`,(err)=>{
-//                   if(err){
-//                       message.channel.send("We ran into an error, I'll let developer know~")
-//                       reportdev(err,msg)
-//                   }
-//                   console.log("Deleted")
-//               })
-//               await message.channel.fetchPinnedMessages()
-//               .then(async msg=>{
-//                   if(msg.size == 0){
-//                       message.channel.send("no pins, try pinning")
-//                   }
-//                   let authid = [], authname = [], cont = []
-//                   msg.forEach((v,k)=>{
-//                       authid.push(v.author.id)
-//                       authname.push(v.author.name)
-//                       cont.push(v)
-//                       let data = `author name:${authname.pop()}\nauthor id:${authid.pop()}\ncontent:${cont.pop()}`
-//                       fs.appendFile(`./${message.channel.name}`,data,(err)=>{
-//                           if(err){
-//                               message.channel.send("NOpe")
-//                               console.log(err)
-//                               reportdev(err,msg)
-//                           }
-//                       })
-//                   })
-//                   await message.channel.send("Pins saved")
-//                   await message.channel.send({
-//                   files:[{
-//                       attachment:`./${message.channel.name}pins`,
-//                       name:`${message.guild.name}_${message.channel.name} pins.txt`
-//                       }]
-//                   });
-//               }).catch(err=>console.log(err))
-//       })
-//     } catch (e) {
-//       message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
-//       reportdev(e,message)
-//     }
-// break;
+bot.login('NTU4Mjg0NTMzMzI2NDEzODM2.Xq2FRw.hw8GakX2fWsMPfm2zfqg977VKpw');
+// bot.login(process.env.bot_token);
