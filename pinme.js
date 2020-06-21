@@ -7,7 +7,6 @@ const prefix = cmdfile.prefix
 const fs = require('fs')
 const talked = new Set();
 
-
 //dotenv vars
 const env = require('dotenv').config()
 // const prefix = process.env.prefix
@@ -46,6 +45,7 @@ bot.on("message", async message=> {
       if(talked.has(message.author.id)){
             message.channel.send("You're on 5sec cooldown");
         }else{
+            console.log("user added",message.author.username)
             talked.add(message.author.id);
     switch(cmd)
     {
