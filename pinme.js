@@ -21,7 +21,10 @@ bot.on("ready", async ()=> {
     // })
 });
 bot.on('guildCreate', async(guild)=>{
-  bot.channels.get('719408160380813343').send(`Joined a guild ${guild.name}`)
+  bot.channels.cache.get(cmdfile.guildchannel).send(`Joined a guild ${guild.name}`)
+})
+bot.on('guildDelete',async(g)=>{
+  bot.channels.cache.get(cmdfile.guildchannel).send(`Left guild ${g.name}`)
 })
 
 bot.on("message", async message=> {
@@ -46,17 +49,13 @@ bot.on("message", async message=> {
             talked.add(message.author.id);
     switch(cmd)
     {
-        case "test":
-          message.channel.send("Im up");
-        break;
         case "guilds":
             if(message.author.id!=stubowner) return;
             else{
-                bot.guilds.forEach(g=>{
-                    message.channel.send(`Guild name: ${g.name}nGuild id: ${g.id}`)
+                bot.guilds.cache.forEach(g=>{
+                    message.channel.send(`Guild name: ${g.name} Guild id: ${g.id}`)
                 })
             }
-            console.log("hm");
         break;
         case "set_bot":
             let iid;
@@ -87,7 +86,6 @@ bot.on("message", async message=> {
                     await message.channel.messages.fetchPinned()
                     .then(async msg =>{
                         msg.forEach(function(value, key){
-                        //if(cont.length==0){ cont.push("null")}
                         cont.push(value.content);
                         authid.push(value.author.id);
                         val.push(value.author.username);

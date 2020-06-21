@@ -1,5 +1,6 @@
     {
         "prefix" :  "~",
         "owner":"407170811787608064",
+        "guildchannel":"719408160380813343",
         "cmdname":["ping","help","pins","guilds","set_bot","invite","test"]
      }
