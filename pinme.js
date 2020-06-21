@@ -6,6 +6,10 @@ const stubowner = cmdfile.owner
 const prefix = cmdfile.prefix
 const fs = require('fs')
 const talked = new Set();
+
+
+//dotenv vars
+const env = require('dotenv').config()
 // const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('wohoo i am ready to senpai!');
@@ -29,7 +33,7 @@ bot.on("message", async message=> {
         .addField("Server id",message.guild.id)
         .addField("Error",err)
         .setColor('RANDOM');
-        bot.users.get(owner).send(reportembed);
+        bot.users.cache.get(stubowner).send(reportembed);
     }
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd  = args.shift().toLowerCase();
@@ -43,9 +47,7 @@ bot.on("message", async message=> {
     switch(cmd)
     {
         case "test":
-          bot.users.cache.get(stubowner).send("ok")
           message.channel.send("Im up");
-
         break;
         case "guilds":
             if(message.author.id!=stubowner) return;
@@ -59,39 +61,34 @@ bot.on("message", async message=> {
         case "set_bot":
             let iid;
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
-                if(message.guild.channels.find(channel => channel.name === "pins")){
-                    let chnl = message.guild.channels.find(c=>c.name == 'pins').id;
-                    message.channel.send(`Channel already exists <#${chnl}>`);
-
+                if(message.guild.channels.cache.find(channel => channel.name === "pins")){
+                    message.channel.send(`Channel already exists <#${message.guild.channels.cache.find(c=>c.name == 'pins').id}>`);
                 }
                 else{
-                    let cat = await message.guild.createChannel("pinned archive",'category');
-                    await message.guild.createChannel("pins",'text').then(c=>{
-                        c.setParent(cat.id)
-                        c.overwritePermissions(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
-                        c.overwritePermissions(message.guild.roles.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
+                    let cat = await message.guild.channels.create("pinned archive",{type:'category'});
+                    await message.guild.channels.create("pins",{type:'text'}).then(c=>{
+                      c.setParent(cat.id)
+                        c.createOverwrite(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
+                        c.createOverwrite(message.guild.roles.cache.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
                     });
-                    iid = message.guild.channels.find(channel => channel.name === "pins");
+                    iid = message.guild.channels.cache.find(channel => channel.name === "pins");
                     message.channel.send(`Channel created: <#${iid.id}>.`);
-                    //message.author.send("Be sure to set parent of pins channel, i.e move channel to particular category.")
                 }
             }
-            else{
-                message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
-            }
+            else return message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
             break;
 
         case "pins":
         try{
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
-            if(!message.guild.channels.find(channel=> channel.name === "pins")) message.channel.send("Channel doesn't exist");
+            if(!message.guild.channels.cache.find(channel=> channel.name === "pins")) return message.channel.send("Channel doesn't exist");
                 else {
                 let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],msgurl = [];
-                    await message.channel.fetchPinnedMessages()
+                    await message.channel.messages.fetchPinned()
                     .then(async msg =>{
                         msg.forEach(function(value, key){
                         //if(cont.length==0){ cont.push("null")}
-                        cont.push(value);
+                        cont.push(value.content);
                         authid.push(value.author.id);
                         val.push(value.author.username);
                         msgurl.push(value.url)
@@ -103,7 +100,7 @@ bot.on("message", async message=> {
                         });
                 if(val.length == 0) message.channel.send("No pins in this channel. Try pinning!");
                 else{
-                    for(i = 0 ; i < val.length; i++){
+                    for(i = val.length-1 ; i >=0; i--){
                         const embed = new discord.MessageEmbed()
                         .setTitle("Pinned message")
                         .addField("Author : "+val[i],"Content: "+cont[i])
@@ -113,10 +110,10 @@ bot.on("message", async message=> {
                         .addField("AttachmentUrl: ", url[i])
                         .addField("Message Url: ",msgurl[i])
                         .addField("Channel name: ", channelname[i]);
-                        message.guild.channels.find(channel=>{
+                        message.guild.channels.cache.find(channel=>{
                             if(channel.name === "pins"){
                                 let iiid = channel.id;
-                                bot.channels.get(iiid).send(embed);
+                                bot.channels.cache.get(iiid).send(embed);
                                 }
                             })
                         }
@@ -125,33 +122,27 @@ bot.on("message", async message=> {
                 })
                 .catch(console.error);
             }
-        }else{
-            message.channel.send(`You do not have correct permission to run this command\nView \`\`${prefix}help\`\` for more`)
-        }
+        }else return message.channel.send(`You do not have correct permission to run this command\nView \`\`${prefix}help\`\` for more`)
     }
-
         catch(err){
             reportdev(err,message);
             message.channel.send("Sorry, I ran into an error, error logs will be sent to developer")
         }
-
         break;
         case "help":
             if(!args[0]){
             const helpembed = new discord.MessageEmbed()
-            .setAuthor(message.guild.me.user.username,message.guild.me.user.avatarURL)
             .setTimestamp()
             .setColor("RANDOM")
-            .setThumbnail(message.author.avatarURL)
             .setTitle("Pin-me Help")
             .addField("**Available commands**",":warning: More commands will be added in the future")
             .addField(":pushpin: ``set_bot``","creates a channel for pinned messages logging with added permission\n It'll create a category named **``pinned archive``** and a ``pins`` channel\n\n**Permissions for channel**\n It'll deny @everyone from sending messages\n\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``pins``","loads pinned messages of the channel in ``pins`` under **``pinned archive``** category\n\n**Embed Info**\nAuthor: Message's author\nContent:Message content\nAuthor id:Message's author id\nUrl: Url for attachments\nChannel name:Pinned message's channel name\n\n**Permission needed:**\n> Administrator")
             .addField(":pushpin: ``ping``","Bot's latency")
             .addField(":pushpin: ``invite``","Invite link for the bot")
-            .setFooter("For more, do [prefix] [command_name].")
-            .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command");
-            message.channel.send(helpembed);
+            .setDescription("Hello there, ever had urge to pin more messages after hitting the pin cap? Don't worry, I got this, you can safely log pinned message into a separate channel, giving you more space to pin~\nTo get started run ``~set_bot`` command")
+            .setFooter("For more, do [prefix] [command_name].");
+            message.channel.send(helpembed)
             }
         break;
         case "ping":
@@ -175,5 +166,5 @@ bot.on("message", async message=> {
 
 });
 
-bot.login('NTU4Mjg0NTMzMzI2NDEzODM2.Xq2FRw.hw8GakX2fWsMPfm2zfqg977VKpw');
-// bot.login(process.env.bot_token);
+// bot.login('NTU4Mjg0NTMzMzI2NDEzODM2.Xu9z9A.AHKgp114ukH1Id0mgzg8KT6jhjs');
+bot.login(process.env['bot_token']);

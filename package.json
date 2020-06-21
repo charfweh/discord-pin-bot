@@ -17,7 +17,8 @@
   "author": "carefree#4601",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "12.2.0"
+    "discord.js": "12.2.0",
+    "dotenv": "^8.2.0"
   },
   "bugs": {
     "url": "https://github.com/charfweh/discord-pin-bot/issues"
