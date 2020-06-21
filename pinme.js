@@ -45,7 +45,6 @@ bot.on("message", async message=> {
       if(talked.has(message.author.id)){
             message.channel.send("You're on 5sec cooldown");
         }else{
-            console.log("user added",message.author.username)
             talked.add(message.author.id);
     switch(cmd)
     {
@@ -58,7 +57,6 @@ bot.on("message", async message=> {
             }
         break;
         case "set_bot":
-            let iid;
             if(message.guild.member(message.author).hasPermission('ADMINISTRATOR')){
                 if(message.guild.channels.cache.find(channel => channel.name === "pins")){
                     message.channel.send(`Channel already exists ${message.guild.channels.cache.find(c=>c.name == 'pins') }`);
@@ -147,7 +145,6 @@ bot.on("message", async message=> {
             await message.channel.send("You've got a dm!")
             await message.author.send("Invite me~\nhttps://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot");
         break;
-
         default:
             return;
         }
@@ -157,7 +154,6 @@ bot.on("message", async message=> {
         },5000)
         }
     }
-
 });
-
+//bot.login(process.env.bot_token)
 bot.login(process.env['bot_token']);
