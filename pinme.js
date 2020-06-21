@@ -12,7 +12,7 @@ const talked = new Set();
 const env = require('dotenv').config()
 // const prefix = process.env.prefix
 bot.on("ready", async ()=> {
-    console.log('wohoo i am ready to senpai!');
+    console.log('I am ready to pin');
     // bot.users.get(stubowner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
     // bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
     // bot.user.setStatus("online");
