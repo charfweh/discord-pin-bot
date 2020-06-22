@@ -32,8 +32,8 @@ To not let guild members misuse pin log channel, we apply permissions which defi
 #### :mega:Invite link
 Invite me, I'd love assist you [Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot)<br>
 
-### :mega:Hosted on ``Heroku``
+#### :mega:Hosted on ``Heroku``
 Hosted the bot under node application registered as a free dyno app providing you with ~22hrs uptime/day and 550hrs/month, works out pretty well for starter bots<br>
-Get started with heroku now! [Heroku](!https://dashboard.heroku.com/)<br>
+Get started with heroku now! [Heroku](https://dashboard.heroku.com/)<br>
 
 Got a bot suggestion? yea send me Discord @Carefree#4601
