@@ -12,9 +12,8 @@ const env = require('dotenv').config()
 // const prefix = process.env.prefix
 bot.on("ready", async ()=> {
     console.log('I am ready to pin');
-    bot.users.cache.get(stubowner).send(`Im up${bot.uptime} with cmds ${cmdfile.cmdname.length}`)
-    bot.user.setActivity("Extracting pins | ~help to view more", {type : "PLAYING"});
-    bot.user.setStatus("online");
+    bot.users.cache.get(stubowner).send(`Im up  with cmds ${cmdfile.cmdname.length}`)
+    bot.user.setPresence({ activity: { name: 'Extracting pins | try ~help to view more',type:"PLAYING"}});
     bot.guilds.cache.forEach(g=>{
         bot.users.cache.get(stubowner).send(`Guild name ${g.name}`);
     })
@@ -65,8 +64,14 @@ bot.on("message", async message=> {
                     await message.guild.channels.create("pins",{type:'text'}).then(c=>{
                         c.createOverwrite(message.guild.id,{SEND_MESSAGES:false,READ_MESSAGES:true})
                         c.createOverwrite(message.guild.roles.cache.find(r=>r.name == "Pin me"),{SEND_MESSAGES:true,READ_MESSAGES:true})
-                    });
-                    message.channel.send(`Channel created: ${message.guild.channels.cache.find(channel => channel.name === "pins")}`);
+                    }).then(()=>{
+                      message.channel.send(`Channel created! ${message.guild.channels.cache.find(c=>c.name === 'pins')}`)
+                    })
+                    .catch((err)=>{
+                      reportdev(err,message)
+                      message.channel.send(`[ERR] ${err}, error logs will be sent to developer`)
+                      }
+                    );
                 }
             }
             else return message.channel.send(`You do not have correct permission to run this command\nView ${prefix}help for more`)
@@ -80,6 +85,7 @@ bot.on("message", async message=> {
                 let val = [],authid = [],cont = [],avatar = [], channelname = [],url = [],msgurl = [];
                     await message.channel.messages.fetchPinned()
                     .then(async msg =>{
+                        if(msg.size == 0) return message.channel.send("No pins in this channel, try pinning!");
                         msg.forEach(function(value, key){
                         cont.push(value.content);
                         authid.push(value.author.id);
@@ -90,10 +96,14 @@ bot.on("message", async message=> {
                         value.attachments.forEach(function(attachment){
                                 url.push(attachment.url);
                             });
-                        });
-                if(val.length == 0) message.channel.send("No pins in this channel. Try pinning!");
-                else{
-                    for(i = val.length-1 ; i >=0; i--){
+                          });
+                      })
+                      .catch((err)=>{
+                        reportdev(err,message);
+                        message.channel.send(`[ERR] ${err}, error logs will be sent to developer`)
+                      });
+                    if(val.length!=0){
+                      for(i = val.length-1 ; i >=0; i--){
                         const embed = new discord.MessageEmbed()
                         .setTitle("Pinned message")
                         .addField("Author : "+val[i],"Content: "+cont[i])
@@ -111,8 +121,6 @@ bot.on("message", async message=> {
                         }
                         await message.channel.send("Pins loaded successfully!");
                     }
-                })
-                .catch(console.error);
             }
         }else return message.channel.send(`You do not have correct permission to run this command\nView \`\`${prefix}help\`\` for more`)
     }
