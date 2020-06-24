@@ -6,11 +6,11 @@
 Introducing pin bot, a discord bot which helps load your pinned messages into a separate channel keeping it safe and sound
 #### :mega: A word on Permissions:
 
-- @everyone : deny send message, allow read message<br>
+- @everyone : deny ``send message``, allow ``read message``<br>
 
-- set_bot: Limited to members with Administrator Permission<br>
+- set_bot: Limited to members with ``Administrator`` Permission<br>
 
-- pins: Limited to members with Administrator Permission<br>
+- pins: Limited to members with ``Administrator`` Permission<br>
 
 You can edit channel's permission as you like but dont remove whats already been set, or open your
 arms for warm errors that befall<br>
@@ -30,7 +30,7 @@ To not let guild members misuse pin log channel, we apply permissions which defi
 
 
 #### :mega: Invite link
-Invite me, I'd love assist you [Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot)<br>
+Invite me, I'd love assistn to you [Invite link](https://discordapp.com/api/oauth2/authorize?client_id=558284533326413836&permissions=1543892209&scope=bot)<br>
 
 #### :mega: Hosted on ``Heroku``
 Hosted the bot under node application registered as a free dyno app providing you with ~22hrs uptime/day and 550hrs/month, works out pretty well for starter bots<br>
